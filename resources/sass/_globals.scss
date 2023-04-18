@@ -1,0 +1,23 @@
+.modal {
+    background-color: #fff;
+    padding: 10px;
+    padding-bottom: 30px;
+
+    &__content,
+    &__buttons {
+        padding: 20px;
+        padding-bottom: 0px;
+    }
+    &__buttons {
+        padding-top: 0px;
+    }
+    &__content {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.modal,
+.v-dialog {
+    border-radius: 16px !important;
+}

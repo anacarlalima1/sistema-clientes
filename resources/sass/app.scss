@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+@import url("./_reset.scss");
+@import "~vuetify/dist/vuetify.min.css";
+@import "~@mdi/font/scss/materialdesignicons";
+@import url("./_globals.scss");
+
+* {
+    font-family: "Montserrat", sans-serif;
+}
+.theme--light.v-sheet {
+    background-color: inherit !important;
+}
