@@ -86,6 +86,7 @@ export default {
     &__buttons {
         padding: 20px;
         padding-bottom: 0px;
+        color: #00bfa6;
     }
     &__buttons {
         padding-top: 0px;

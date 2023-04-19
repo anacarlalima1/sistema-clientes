@@ -4,6 +4,8 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ImageBinaryController;
+use App\Http\Requests\user\adicionarUserRequest;
+use App\Http\Requests\user\atualizarUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,10 +26,10 @@ class UserController extends Controller
         return  view('home.home');
     }
 
-    public function listarClientes()
+    public function listarClientes(Request $request)
     {
         try {
-            $clientes = $this->user->buscarClientes();
+            $clientes = $this->user->buscarClientes($request);
 
             return response()->json(['success' => true, 'clientes' => $clientes]);
         } catch (\Exception $exception) {
@@ -48,7 +50,7 @@ class UserController extends Controller
         }
     }
 
-    public function cadastrarCliente(Request $request)
+    public function cadastrarCliente(adicionarUserRequest $request)
     {
         try {
             $binary = $request['imagem'];
@@ -68,7 +70,7 @@ class UserController extends Controller
         }
     }
 
-    public function editarCliente(Request $request)
+    public function editarCliente(atualizarUserRequest $request)
     {
         try {
             if (isset($request['imagem'])) {

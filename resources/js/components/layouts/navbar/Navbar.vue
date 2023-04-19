@@ -40,9 +40,7 @@
 
 <script>
 import Home from "../../icons/Home.vue";
-import Avaliacao from "../../icons/Avaliacao.vue";
 import Sair from "../../icons/Sair.vue";
-import Relatorio from "../../icons/Relatorio.vue";
 import ListItem from "./ListItem.vue";
 import ListGroupItem from "./ListGroupItem.vue";
 
@@ -50,8 +48,6 @@ export default {
     props: ["menuOpen", "toggleMenu"],
     components: {
         Home,
-        Avaliacao,
-        Relatorio,
         Sair,
         ListItem,
         ListGroupItem,
@@ -68,21 +64,9 @@ export default {
                     ativo: false,
                 },
                 {
-                    titulo: "Redações Reescritas",
-                    icon: Avaliacao,
-                    rota: "/redacao/reescrita",
-                    ativo: false,
-                },
-                {
-                    titulo: "Relatorio",
-                    icon: Relatorio,
-                    rota: "/relatorio",
-                    ativo: false,
-                },
-                {
                     titulo: "Sair",
                     icon: Sair,
-                    rota: "/sair",
+                    rota: "/",
                     ativo: false,
                 },
             ],

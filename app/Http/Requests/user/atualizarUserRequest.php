@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\aluno;
+namespace App\Http\Requests\user;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class atualizarAlunoRequest extends FormRequest
+class atualizarUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,10 +28,8 @@ class atualizarAlunoRequest extends FormRequest
     {
         return [
             'nome' => 'required|string|max:255',
-            'email' => [Rule::unique('user', 'email')->ignore($this['id_user'])],
-            'matricula' => [Rule::unique('user', 'matricula')->ignore($this['id_user'])],
-            'password' => 'max:255|confirmed',
-//            'password_confirmation' => ''
+            'nome_social' => 'required|string|max:255',
+            'cpf' => [Rule::unique('user', 'cpf')->ignore($this['id'])],
         ];
     }
 
@@ -39,10 +37,7 @@ class atualizarAlunoRequest extends FormRequest
     {
         return [
             'required' => 'Campo obrigatório!',
-            'email' => 'Informe um endereço de email válido!',
             'max' => 'Número de caracteres atingido!',
-            'email.unique' => 'Esse email já foi cadastrado!',
-            'password.confirmed' => 'As senhas não coincidem!',
         ];
     }
 

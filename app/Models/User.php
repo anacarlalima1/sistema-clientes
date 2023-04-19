@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,10 +44,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function buscarClientes()
+    public static function buscarClientes($request)
     {
         $users = DB::table('user')
             ->select('user.*')
+            ->where(function ($query) use ($request) {
+                if (isset($request['nome'])) {
+                    $query->where('user.nome', 'like', "%" . $request['nome'] . "%");
+                }
+            })
             ->paginate(10);
         foreach ($users as $user) {
             $user->imagem = env('ADMIN_URL') . "/" . $user->imagem;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\aluno;
+namespace App\Http\Requests\user;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class adicionarAlunoRequest extends FormRequest
+class adicionarUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,18 +27,15 @@ class adicionarAlunoRequest extends FormRequest
     {
         return [
             'nome' => 'required|string|max:255',
-            'email' => 'email|max:100|unique:user',
-            'matricula' => 'unique:user',
-            'password' => 'max:255|confirmed',
+            'nome_social' => 'required|string|max:255',
+            'cpf' =>'required|unique:user'
         ];
     }
     public function messages()
     {
         return ['required' => 'Campo obrigatório!',
-            'email' => 'Informe um endereço de email válido!',
-            'email.unique' => 'Esse email já foi cadastrado!',
-            'matricula.unique' => 'Já existe um professor cadastrado com essa matrícula!',
-            'password.confirmed' => 'As senhas não coincidem!',
+            'cpf.unique' => 'Esse CPF já foi cadastrado!',
+
         ];
     }
 

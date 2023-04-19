@@ -5,9 +5,7 @@
                 {{ titulo ?? "" }}
             </h3>
             <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos accusantium ipsum et nobis quaerat. Sunt
-                voluptatibus, delectus porro exercitationem nam praesentium dolores ratione ipsa hic voluptas, obcaecati, facere
-                consequatur sequi.
+                Plataforma desenvolvida com o intuito de armazenar informações de clientes.
             </p>
             <slot name="tabs"/>
 
@@ -30,8 +28,6 @@
                     @click:append="$emit('filtrar-nome', pesquisa)"
                     @keyup.enter="$emit('filtrar-nome', pesquisa)"
                 />
-
-                <Filtro tipo="botao" @filtrar="$emit('filtrar', $event)" :filtros="filtros"/>
             </div>
         </section>
 
@@ -54,12 +50,14 @@
 import alerts from "../mixins/alerts";
 import Loading from "../components/ui/Loading.vue";
 import ModalInputs from "../components/feedback/ModalInputs.vue";
+import Filtro from "../pages/Filtro.vue";
 
 export default {
     name: "BaseCrud",
     components: {
         Loading,
         "modal-inserir": ModalInputs,
+        Filtro,
     },
     mixins: [alerts],
 

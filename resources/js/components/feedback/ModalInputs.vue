@@ -38,20 +38,6 @@
                         :rules="[verificarSelectVazio(input),...(input.rules || [])]"
                         :error-messages="input?.erros || []"
                     ></v-autocomplete>
-                    <v-autocomplete
-                        class="input"
-                        v-if="input.tipo == 'escola_turma'"
-                        :item-text="input.selectText||'nome'"
-                        item-value="id_escola_turma"
-                        v-model="input.valor"
-                        :items="input.itens"
-                        filled
-                        :placeholder="input.placeholder"
-                        :multiple="input.multiplo"
-                        solo
-                        :rules="[verificarSelectVazio(input),...(input.rules || [])]"
-                        :error-messages="input?.erros || []"
-                    ></v-autocomplete>
                     <v-text-field
                         v-if="input.tipo == 'textfield'"
                         v-model="input.valor"
@@ -155,7 +141,7 @@
                 </v-col>
             </v-row>
         </v-form>
-        <v-btn @click="verificarCampos" large width="200px" dark rounded color="var(--main-color)">Salvar</v-btn>
+        <v-btn @click="verificarCampos" large width="200px" dark rounded color="#00bfa6">Salvar</v-btn>
     </base-modal>
 </template>
 <script>

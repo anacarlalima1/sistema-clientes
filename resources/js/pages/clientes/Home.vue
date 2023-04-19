@@ -7,7 +7,6 @@
                 titulo="Clientes"
                 label-pesquisa="Digite o nome"
                 :inputs="inputs"
-                :filtros="filtros"
                 @filtrar-nome="
 					nomeFiltro = $event;"
                 @salvar-registro="(callback) => adicionarCliente(callback)"
@@ -30,7 +29,7 @@
                         <!-- Editar | Excluir column -->
                         <template #item.actions="{ item }">
                             <td>
-                                <menu-action @excluir="excluirCliente(item.id)" @editar="editarCliente(item.id)" />
+                                <menu-action @excluir="excluirCliente(item.id)" @editar="editarCliente(item.id)"  />
                             </td>
                         </template>
                     </v-data-table>
@@ -119,7 +118,6 @@ export default {
                 new TableHeader("Data de Nascimento", "start", false, "data_nasc"),
                 new TableHeader("Actions", "start", false, "actions"),
             ],
-            filtros:{},
             table:{},
 }
 },
@@ -131,7 +129,7 @@ export default {
             try {
                 let { isConfirmed } = await this.alertAnswer("Deseja excluir o cliente?", "");
                 if (isConfirmed) {
-                    let response = await axios.post(`/clientes/deletar-cliente`, {
+                    let response = await axios.delete(`/cadastro/cliente?id=${id}`, {
                         id: id,
                     });
                     let data = response.data;
@@ -145,7 +143,7 @@ export default {
         },
         async editarCliente(id) {
             try {
-                let response = await axios.get(`/clientes/cliente?id=${id}`);
+                let response = await axios.get(`/cadastro/cliente?id=${id}`);
                 let data = response.data;
                 this.clienteSelecionado = data.cliente;
                 this.setDataAtualizarEscola(data.cliente);
@@ -155,9 +153,9 @@ export default {
             }
         },
         setDataAtualizarEscola(data) {
-            this.inputs["foto"].valor = null;
-            this.inputs["foto"].obrigatorio = false;
-            this.inputs["foto"].placeholder = "Deixe vazio caso não queira atualizar o campo";
+            this.inputs["imagem"].valor = null;
+            this.inputs["imagem"].obrigatorio = false;
+            this.inputs["imagem"].placeholder = "Deixe vazio caso não queira atualizar o campo";
 
             this.inputs["nome_social"].valor = data?.nome_social;
             this.inputs["nome"].valor = data?.nome;
@@ -169,11 +167,11 @@ export default {
             try {
                 const formData = this.getPostData();
                 formData.append("id", this.clienteSelecionado.id);
-                let response = await axios.post(`/clientes/editar-clientes`, formData);
+                let response = await axios.post(`/cadastro/editar-cliente`, formData);
                 if (response.data.success) {
                     this.alertSuccess("Cliente atualizado com sucesso!");
                     callback();
-                    this.getClientes();
+                    this.listarClientes();
                 }
             } catch (err) {
                 this.alertErro(err, err);
@@ -186,7 +184,7 @@ export default {
             this.isLoading = true;
             try {
                 const formData = this.getPostData();
-                let response = await axios.post(`/clientes/cadastrar-cliente`, formData);
+                let response = await axios.post(`/cadastro/cliente`, formData);
                 if (response.data.success) {
                     this.alertSuccess("Cliente adicionado com sucesso!");
                     callback();
@@ -202,7 +200,7 @@ export default {
         async listarClientes(pagina = "?page=1") {
             this.isLoading = true;
             try {
-                let response = await axios.get(`/clientes/listar-clientes${pagina}`);
+                let response = await axios.get(`/cadastro/clientes${pagina}`, {params:{nome: this.nomeFiltro}});
                 let data = response.data;
                 this.table = data.clientes;
             } catch (err) {
