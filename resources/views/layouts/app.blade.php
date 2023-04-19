@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Mais Saber</title>
+    <title>Plataforma de Clientes</title>
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
@@ -20,8 +20,6 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-    <script src="//code.jivosite.com/widget/702cqDukIc" async></script>
-{{--    <script src="//code.jivosite.com/widget/NpZIyOj2FD" async></script>--}}
 </head>
 <body>
     <div id="app">
@@ -30,17 +28,5 @@
         </main>
     </div>
 
-    <!-- @include('includes.vlibras') -->
-<!--
-     <script>
-        (function (o, c, t, a, d, e, s, k) {
-            o.octadesk = o.octadesk || {};
-            s = c.getElementsByTagName("body")[0];
-            k = c.createElement("script");
-            k.async = 1;
-            k.src = t + '/' + a + '?showButton=' +  d + '&openOnMessage=' + e;
-            s.appendChild(k);
-        })(window, document, 'https://chat.octadesk.services/api/widget', 'mvceditora',  true, true);
-    </script> -->
 </body>
 </html>

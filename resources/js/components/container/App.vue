@@ -1,26 +1,28 @@
 <template>
     <v-app class="background">
         <navbar v-if="temNavbar" :menu-open="menuAberto" />
-        <v-container fluid :class="{ 'padding-70': temNavbar }">
+        <v-container fluid :class="{ 'padding-70': temNavbar }" class="py-0">
+
             <keep-alive>
-                <router-view :key="$route.fullPath"></router-view>
+                <router-view
+                    class="padding-container"
+                    :key="$route.fullPath"
+                ></router-view>
             </keep-alive>
         </v-container>
     </v-app>
 </template>
 
 <script>
-import Navbar from "@/components/navbar/Navbar.vue";
-
+import Navbar from "@/components/layouts/navbar/Navbar.vue";
+import Header from "@/components/layouts/Header.vue";
 export default {
-    components: { Navbar },
-
+    components: { Navbar, "base-header": Header },
     data() {
         return { menuAberto: true };
     },
     computed: {
         temNavbar() {
-            console.log(this.$route);
             let rotasSemNavbar = ["/"];
             return !rotasSemNavbar.includes(this.$route.fullPath);
         },
@@ -30,7 +32,6 @@ export default {
 
 <style lang="scss">
 @import "@sass/_variables.scss";
-
 .background {
     background-color: $background !important;
 }

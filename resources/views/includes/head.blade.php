@@ -6,5 +6,5 @@
     <link rel="stylesheet" href="/assets/css/starter.css">
     <link rel="stylesheet" href="/assets/css/main.css">
 
-    <title>Mais Saber</title>
+    <title>Plataforma de Clientes</title>
 </head>

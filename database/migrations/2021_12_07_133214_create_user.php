@@ -17,14 +17,10 @@ class CreateUser extends Migration
             Schema::create('user', function (Blueprint $table) {
                 $table->id();
                 $table->string('nome')->nullable();
-                $table->string('email')->unique();
-                $table->string('matricula')->unique()->nullable();
-                $table->string('password');
-                $table->integer('id_privilegio')->unsigned();
-                $table->integer('id_turma')->unsigned()->nullable();
-                $table->integer('id_escola')->unsigned()->nullable();
+                $table->string('nome_social')->nullable();
+                $table->date('data_nasc');
+                $table->string('cpf')->unique()->nullable();
                 $table->string('foto')->nullable();
-                $table->enum('status', ['Ativo', 'Inativo'])->default('Ativo');
                 $table->timestamps();
             });
         }

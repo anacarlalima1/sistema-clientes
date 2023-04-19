@@ -3,49 +3,102 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\EmailController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ImageBinaryController;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+    public function inicio()
+    {
+        return view('home.home');
+    }
+    public static function root()
+    {
+        return  view('home.home');
+    }
+
+    public function listarClientes()
     {
         try {
-            return view('change-password');
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            $clientes = $this->user->buscarClientes();
+
+            return response()->json(['success' => true, 'clientes' => $clientes]);
+        } catch (\Exception $exception) {
+            return response()->json(['success' => false, 'exception' => $exception->getMessage()], 400);
+        }
+
+    }
+    public function buscarClienteId(Request $request)
+    {
+        try {
+
+            $cliente = $this->user->where('id', $request['id'])->first();
+            $cliente->foto = env('APP_URL') . "/" . $cliente->foto;
+
+            return response()->json(['success' => true, 'cliente' => $cliente]);
+        } catch (\Exception $exception) {
+            return response()->json(['success' => false, 'message' => $exception->getMessage()], 500);
         }
     }
 
-    public function updatePassword(Request $request)
+    public function cadastrarCliente(Request $request)
     {
-        $array = $request->all();
-        $validationUpdate = $this->validationUpdate($array);
-        if ($validationUpdate->fails()) {
-            throw ValidationException::withMessages($validationUpdate->errors()->getMessages());
-        }
         try {
-            $id = Auth::id();
-            $user = User::where('id', $id)->update([
-                "password" => Hash::make($array['password']),
-                "change_first" => 0
-            ]);
-            return redirect('/');
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            $binary = $request['imagem'];
+            $dadosFoto = ImageBinaryController::uploadsFromBinary($binary, ['jpg', 'jpeg', 'png'], "cliente/foto");
+
+            $dados['nome'] = $request['nome'];
+            $dados['nome_social'] = $request['nome_social'];
+            $dados['data_nasc'] = $request['data_nasc'];
+            $dados['cpf'] = $request['cpf'];
+            $dados['imagem'] = $dadosFoto['path'];
+            $dados['created_at'] = now();
+            $this->user->insert($dados);
+
+            return response()->json(['success' => true, 'message' => 'Suas informações foram salvas com sucesso!']);
+        } catch (\Exception $exception) {
+            return response()->json(['success' => false, 'exception' => $exception->getMessage()], 400);
         }
     }
 
-    private function validationUpdate($data)
+    public function editarCliente(Request $request)
     {
-        return Validator::make($data, ["password" => "required|confirmed", "password_confirmation" => "required"], [
-            "password.required" => "Campo obrigatório",
-            "password.confirmed" => "Senhas não coincidem"
-        ]);
+        try {
+            if (isset($request['imagem'])) {
+                $binary = $request['imagem'];
+                $dadosFoto = ImageBinaryController::uploadsFromBinary($binary, ['jpg', 'jpeg', 'png'], "cliente/foto");
+                $dados['imagem'] = $dadosFoto['path'];
+            }
+
+            $dados['nome'] = $request['nome'];
+            $dados['nome_social'] = $request['nome_social'];
+            $dados['data_nasc'] = $request['data_nasc'];
+            $dados['cpf'] = $request['cpf'];
+            $dados['updated_at'] = now();
+            $this->user->where('id', $request['id'])->update($dados);
+
+            return response()->json(['success' => true, 'message' => 'Suas informações foram alteradas com sucesso!']);
+        } catch (\Exception $exception) {
+            return response()->json(['success' => false, 'exception' => $exception->getMessage()], 400);
+        }
+    }
+
+    public function deletarCliente(Request $request)
+    {
+        try {
+
+            $this->user->where('id', $request['id'])->delete();
+
+            return response()->json(['success' => true, 'message' => 'Informações deletadas com sucesso!']);
+        } catch (\Exception $exception) {
+            return response()->json(['success' => false, 'erros' => $exception->getMessage()], 500);
+        }
     }
 }
